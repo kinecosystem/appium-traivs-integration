@@ -1,0 +1,25 @@
+language: swift
+xcode_sdk: iphonesimulator8.4
+
+before_script:
+
+  #Install appium
+  - brew upgrade openssl
+  - brew upgrade python
+  - npm install -g appium
+  - npm install -g wd
+  - sudo pip3 install Appium-Python-Client pytest requests
+  #Clone the automation scripts
+  - git clone https://github.com/kinecosystem/automation-project-name.git
+
+script:
+#Build sample app
+  - cd yourappname
+  - mkdir derivedData
+  - xcodebuild -scheme yourappname -derivedDataPath derivedData -destination 'platform=iOS Simulator,name=iPhone 8 Plus'
+#Run automation
+  - cd ..
+  - cd automation-project-name
+  - appium &
+  - sleep 10
+  - python3 -m pytest -x -v iOS_automation_script.py
